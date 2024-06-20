@@ -158,7 +158,7 @@ MonoBehaviour:
   m_Priority: 10
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
-  m_Follow: {fileID: 0}
+  m_Follow: {fileID: 929352756}
   m_Lens:
     FieldOfView: 60
     OrthographicSize: 14.545908
@@ -187,7 +187,7 @@ Transform:
   m_GameObject: {fileID: 420849348}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14.969642, y: 0.020766795, z: -29.137276}
+  m_LocalPosition: {x: 16.35, y: 0.8, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -317,7 +317,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14.969642, y: 0.020766795, z: -29.137276}
+  m_LocalPosition: {x: 16.35, y: 0.8, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -451,7 +451,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 601952444}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 98a2250b24cf1b341ab3e3bbb8ff0c3c, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1023,7 +1023,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 0.68
-  m_LinearDrag: 0
+  m_LinearDrag: 1
   m_AngularDrag: 0.05
   m_GravityScale: 4
   m_Material: {fileID: 0}
@@ -1061,6 +1061,8 @@ MonoBehaviour:
     m_Bits: 192
   wallCheck: {fileID: 1524084515}
   isWallSliding: 0
+  isJumping: 0
+  jumpTime: 0.35
 --- !u!1 &1197829775
 GameObject:
   m_ObjectHideFlags: 0
@@ -1216,7 +1218,7 @@ Transform:
   m_GameObject: {fileID: 1524084514}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.297, y: 0.216, z: 0}
+  m_LocalPosition: {x: 0.4280047, y: 0.1247267, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Common;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -17,8 +18,17 @@ public class playerMovement : MonoBehaviour
     public bool isWallSliding;
     //public float wallSlidingSpeed = 5.0f;
     private float moveInput;
-     private bool isFacingRight = true;
+    private bool isFacingRight = true;
+    public bool isJumping;
+    private float jumpTimeCounter;
+    public float jumpTime;
 
+    public bool isWallJumping;
+    private float wallJumpingDirection;
+    private float wallJumpingTime = 0.2f;
+    private float wallJumpingCounter;
+    private float wallJumpingDuration = 0.4f;
+    private Vector2 wallJumpingPower = new Vector2(8f, 16f);
 
     void Start()
     {
@@ -31,8 +41,14 @@ public class playerMovement : MonoBehaviour
       Movement();
       Jump();
       WallSlide();
-      Flip();
+      WallJump();
+
+      if (!isWallJumping)
+        {
+            Flip();
+        }
     }
+
 
     void Movement()
     {
@@ -44,16 +60,72 @@ public class playerMovement : MonoBehaviour
     {
      if(Input.GetKeyDown(KeyCode.W) && isGrounded())
        {
-        rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        isJumping = true;
+        jumpTimeCounter = jumpTime;
+        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
        }
+
+     else if(Input.GetKey(KeyCode.W) && isJumping == true)
+        {
+          if(jumpTimeCounter > 0)
+           {
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            jumpTimeCounter -= Time.deltaTime;
+           }
+           else
+           {
+            isJumping = false;
+           }
+        }
+     else if(Input.GetKeyUp(KeyCode.W))
+     {
+      isJumping = false;
+     }
     }
 
-
-    private void WallSlide()
+        private void WallJump()
     {
-      if(!isGrounded() && isWalled())
+        if (isWallSliding)
+        {
+            isWallJumping = false;
+            wallJumpingDirection = -transform.localScale.x;
+            wallJumpingCounter = wallJumpingTime;
+
+            CancelInvoke(nameof(StopWallJumping));
+        }
+        else
+        {
+            wallJumpingCounter -= Time.deltaTime;
+        }
+
+        if (Input.GetKeyDown(KeyCode.W) && wallJumpingCounter > 0f)
+        {
+            isWallJumping = true;
+            rb.velocity = new Vector2(wallJumpingDirection * wallJumpingPower.x, wallJumpingPower.y);
+            wallJumpingCounter = 0f;
+
+            if (transform.localScale.x != wallJumpingDirection)
+            {
+                isFacingRight = !isFacingRight;
+                Vector3 localScale = transform.localScale;
+                localScale.x *= -1f;
+                transform.localScale = localScale;
+            }
+
+            Invoke(nameof(StopWallJumping), wallJumpingDuration);
+        }
+    }
+
+    void StopWallJumping()
+    {
+      isWallJumping = false;
+    }
+
+    void WallSlide()
+    {
+      if(!isGrounded() && isWalled() && moveInput != 0f)
       {
-        rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -5.0f, -5.0f));
+        rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -4.0f, -4.0f));
         isWallSliding = true;
       }
       else
@@ -76,8 +148,9 @@ public class playerMovement : MonoBehaviour
 
     public bool isWalled()
     {
-     return Physics2D.OverlapCircle(wallCheck.position, 0.35f, wallLayer);
+     return Physics2D.OverlapBox(wallCheck.position, boxSize, 90 , wallLayer);
     }
+    
 
     void Flip()
     {
@@ -95,6 +168,10 @@ public class playerMovement : MonoBehaviour
       Gizmos.color = Color.red;
       Gizmos.DrawWireCube(transform.position-transform.up * castDistance, boxSize);
       Gizmos.color = Color.green;
-      Gizmos.DrawWireSphere(wallCheck.position, 0.35f);
+      Matrix4x4 oldMatrix = Gizmos.matrix;
+      Matrix4x4 rotationMatrix = Matrix4x4.TRS(wallCheck.position, Quaternion.Euler(0, 0, 90), Vector3.one);
+      Gizmos.matrix = rotationMatrix;
+      Gizmos.DrawWireCube(Vector3.zero, boxSize);
+      Gizmos.matrix = oldMatrix;
     }
 }
