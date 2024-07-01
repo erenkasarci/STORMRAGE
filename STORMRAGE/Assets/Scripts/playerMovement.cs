@@ -30,6 +30,12 @@ public class playerMovement : MonoBehaviour
     private float wallJumpingDuration = 0.4f;
     private Vector2 wallJumpingPower = new Vector2(8f, 16f);
 
+    public float coyoteTime = 0.2f;
+    public float coyoteTimeCounter;
+    private bool isGroundedResult;
+
+
+
     void Start()
     {
       rb = GetComponent<Rigidbody2D>();
@@ -47,6 +53,16 @@ public class playerMovement : MonoBehaviour
         {
             Flip();
         }
+
+      if (isGrounded())
+      {
+        coyoteTimeCounter = coyoteTime;
+      }
+      else
+      {
+        coyoteTimeCounter -= Time.deltaTime;
+      }
+
     }
 
 
@@ -58,7 +74,7 @@ public class playerMovement : MonoBehaviour
 
     void Jump()
     {
-     if(Input.GetKeyDown(KeyCode.W) && isGrounded())
+     if(Input.GetKeyDown(KeyCode.W) && coyoteTimeCounter > 0f )
        {
         isJumping = true;
         jumpTimeCounter = jumpTime;
@@ -79,7 +95,9 @@ public class playerMovement : MonoBehaviour
         }
      else if(Input.GetKeyUp(KeyCode.W))
      {
+
       isJumping = false;
+      coyoteTimeCounter = 0f;
      }
     }
 
@@ -134,7 +152,9 @@ public class playerMovement : MonoBehaviour
       }
     }
 
-    public bool isGrounded()
+
+
+     public bool isGrounded()
     {
       if(Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, castDistance, groundLayer))
       {
@@ -145,6 +165,7 @@ public class playerMovement : MonoBehaviour
         return false;
       }
     }
+
 
     public bool isWalled()
     {
