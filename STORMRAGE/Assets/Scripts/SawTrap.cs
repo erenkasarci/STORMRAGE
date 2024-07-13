@@ -5,8 +5,8 @@ using UnityEngine;
 public class SawTrap : MonoBehaviour
 {
     [SerializeField] private float rotateSpeed = 20.0f;
-    [SerializeField] private float damageAmount = 1.0f;
-    [SerializeField] private float damageInterval = 0.2f;
+    [SerializeField] private float damageAmount = -3.0f;
+    [SerializeField] private float damageInterval = 0.1f;
     private HealthBar health;
     private Coroutine damageCoroutine;
 

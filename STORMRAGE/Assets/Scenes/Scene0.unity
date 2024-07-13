@@ -466,11 +466,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fa89de8f75b2684581fe410d7a24afd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerSprite: {fileID: 929352755}
   healthSlider: {fileID: 1415292778}
   easeHealthSlider: {fileID: 30029924}
+  lerpSpeed: 0.007
   maxHealth: 100
   currentHealth: 0
-  lerpSpeed: 0.007
+  maxHealthPotion: 3
+  currentHealthPotion: 0
+  PotionStandTime: 0.3
 --- !u!1 &420849348
 GameObject:
   m_ObjectHideFlags: 0
@@ -2097,8 +2101,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotateSpeed: 20
-  damageAmount: 1
-  damageInterval: 0.01
+  damageAmount: -3
+  damageInterval: 0.1
 --- !u!1 &1415292775
 GameObject:
   m_ObjectHideFlags: 0
