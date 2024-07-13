@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class healthBar : MonoBehaviour
+public class HealthBar : MonoBehaviour
 {
     [SerializeField] private Slider healthSlider;
     [SerializeField] private Slider easeHealthSlider;
@@ -18,24 +18,27 @@ public class healthBar : MonoBehaviour
 
     void Update()
     {
-        if(healthSlider.value != currentHealth)
-        {
-            healthSlider.value = currentHealth;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            TakeDamage(10);
-        }
-
-        if(healthSlider.value != easeHealthSlider.value)
-        {
-             easeHealthSlider.value = Mathf.Lerp(easeHealthSlider.value, currentHealth, lerpSpeed);
-        }
+      if(healthSlider.value != currentHealth)
+      {
+        healthSlider.value = currentHealth;
+      }
+      if(healthSlider.value != easeHealthSlider.value)
+      {
+        easeHealthSlider.value = Mathf.Lerp(easeHealthSlider.value, currentHealth, lerpSpeed);
+      }
     }
 
-    void TakeDamage(float damage)
+    internal void TakeDamage(float damage)
     {
-        currentHealth -= damage;
+      currentHealth -= damage;
+      if (currentHealth <= 0)
+      {
+        Die(); 
+      }
+    }
+
+    void Die()
+    {
+      Debug.Log("YOU DIED");
     }
 }
