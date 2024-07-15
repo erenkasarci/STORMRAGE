@@ -16,8 +16,9 @@ public class PlayerMovement : MonoBehaviour
     // Movement
     [Header("Move Speed")][Space(10)]
     [SerializeField] private float moveSpeed = 8f;
+    [SerializeField] private bool canMove = true;
     private float moveInput;
-
+    
     // Ground Check for Jump
     [Header("Ground Check")][Space(10)]
     [SerializeField] private LayerMask groundLayer;
@@ -82,8 +83,27 @@ public class PlayerMovement : MonoBehaviour
 
     void Movement()
     {
-      moveInput = Input.GetAxisRaw("Horizontal");
-      rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y); 
+      if(canMove)
+      {
+       moveInput = Input.GetAxisRaw("Horizontal");
+       rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y); 
+      }
+      else
+      {
+        rb.velocity = new Vector2(0, 0);
+      }
+    }
+
+    internal IEnumerator StandTime(float standTime)
+    {
+     SetCanMove(false);
+     yield return new WaitForSeconds(standTime);
+     SetCanMove(true);
+    }
+
+    void SetCanMove(bool value)
+    {
+      canMove = value;
     }
 
     void Flip()
@@ -165,7 +185,7 @@ public class PlayerMovement : MonoBehaviour
       return Physics2D.OverlapBox(wallCheck.position, boxSize, 90 , wallLayer);
     }
     
-    private bool isGrounded()
+    internal bool isGrounded()
     {
       if(Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, groundDistance, groundLayer))
       {

@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class HealthBar : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer playerSprite;
+    private PlayerMovement playerMovement;
+    [SerializeField] private GameObject player;
 
     [Header("Sliders")][Space(10)]
     [SerializeField] private Slider healthSlider;
@@ -20,8 +22,13 @@ public class HealthBar : MonoBehaviour
     [Header("Health Potion")][Space(10)]
     [SerializeField] private int maxHealthPotion = 3;
     [SerializeField] private int currentHealthPotion;
-    [SerializeField] private float PotionStandTime =0.3f;
+    [SerializeField] private float potionStandTime =0.8f;
+    [SerializeField] private float healthAmount = 20.0f;
     
+    void Awake()
+    {
+      playerMovement = GameObject.Find("Player").GetComponent<PlayerMovement>();
+    }
 
     void Start()
     {
@@ -60,11 +67,12 @@ public class HealthBar : MonoBehaviour
 
     void HealUp()
     {
-      if(Input.GetKeyDown(KeyCode.E) && currentHealthPotion > 0)
+      if(Input.GetKeyDown(KeyCode.E) && currentHealthPotion > 0 && playerMovement.isGrounded())
       {
-        TakeDamage(20);
+        TakeDamage(healthAmount);
         currentHealthPotion -= 1;
-        StartCoroutine(HealUsed());
+        StartCoroutine(playerMovement.StandTime(potionStandTime));
+        StartCoroutine(HealUsed());   
       }
     }
 
@@ -72,12 +80,12 @@ public class HealthBar : MonoBehaviour
     {
       Color originalColor = playerSprite.color;
       playerSprite.color = Color.red;
-      yield return new WaitForSeconds(PotionStandTime);
+      yield return new WaitForSeconds(potionStandTime);
       playerSprite.color = originalColor;
     }
 
     void Die()
     {
-      Debug.Log("YOU DIED");
+      Destroy(player);
     }
 }

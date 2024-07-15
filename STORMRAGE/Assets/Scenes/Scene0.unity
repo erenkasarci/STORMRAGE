@@ -467,6 +467,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerSprite: {fileID: 929352755}
+  player: {fileID: 929352754}
   healthSlider: {fileID: 1415292778}
   easeHealthSlider: {fileID: 30029924}
   lerpSpeed: 0.007
@@ -474,7 +475,8 @@ MonoBehaviour:
   currentHealth: 0
   maxHealthPotion: 3
   currentHealthPotion: 0
-  PotionStandTime: 0.3
+  potionStandTime: 0.3
+  healthAmount: 20
 --- !u!1 &420849348
 GameObject:
   m_ObjectHideFlags: 0
