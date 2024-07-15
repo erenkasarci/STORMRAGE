@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Move Speed")][Space(10)]
     [SerializeField] private float moveSpeed = 8f;
     [SerializeField] private bool canMove = true;
-    private float moveInput;
+    internal float moveInput;
     
     // Ground Check for Jump
     [Header("Ground Check")][Space(10)]
@@ -91,6 +91,7 @@ public class PlayerMovement : MonoBehaviour
       else
       {
         rb.velocity = new Vector2(0, 0);
+        jumpTimeCounter = 0;
       }
     }
 
@@ -101,7 +102,7 @@ public class PlayerMovement : MonoBehaviour
      SetCanMove(true);
     }
 
-    void SetCanMove(bool value)
+    internal void SetCanMove(bool value)
     {
       canMove = value;
     }

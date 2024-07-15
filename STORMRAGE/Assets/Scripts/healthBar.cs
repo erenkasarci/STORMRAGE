@@ -15,13 +15,13 @@ public class HealthBar : MonoBehaviour
     [SerializeField] private float lerpSpeed = 0.05f;
 
     [Header("Health")][Space(10)]
-    [SerializeField] private float maxHealth = 100f;
-    [SerializeField] private float currentHealth;
+    [SerializeField] internal float maxHealth = 100f;
+    [SerializeField] internal float currentHealth;
     
 
     [Header("Health Potion")][Space(10)]
-    [SerializeField] private int maxHealthPotion = 3;
-    [SerializeField] private int currentHealthPotion;
+    [SerializeField] internal int maxHealthPotion = 3;
+    [SerializeField] internal int currentHealthPotion;
     [SerializeField] private float potionStandTime =0.8f;
     [SerializeField] private float healthAmount = 20.0f;
     
