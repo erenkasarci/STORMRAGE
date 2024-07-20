@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 public class HealthBar : MonoBehaviour
 {
-    [SerializeField] private SpriteRenderer playerSprite;
     private PlayerMovement playerMovement;
+    [SerializeField] private SpriteRenderer playerSprite;
     [SerializeField] private GameObject player;
 
     [Header("Sliders")][Space(10)]
@@ -29,6 +29,7 @@ public class HealthBar : MonoBehaviour
     void Awake()
     {
       playerMovement = GameObject.Find("Player").GetComponent<PlayerMovement>();
+      
     }
 
     void Start()

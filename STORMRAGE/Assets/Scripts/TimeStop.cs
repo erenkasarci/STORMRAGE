@@ -28,9 +28,10 @@ public class TimeStop : MonoBehaviour
         } 
     }
 
-    void StopTime(float ChangeTime, int RestoreSpeed, float Delay)
+    internal void StopTime(float ChangeTime, int RestoreSpeed, float Delay)
     {
       Speed = RestoreSpeed;
+      Time.timeScale = ChangeTime; 
 
       if(Delay > 0)
       {
@@ -41,8 +42,6 @@ public class TimeStop : MonoBehaviour
       {
         RestoreTime = true;
       }
-
-      Time.timeScale = ChangeTime; 
     }
 
     IEnumerator StartTimeAgain(float amt)
