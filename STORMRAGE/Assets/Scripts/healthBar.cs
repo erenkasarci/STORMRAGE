@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class HealthBar : MonoBehaviour
 {
     private PlayerMovement playerMovement;
+    private TimeStop timeStop;
     [SerializeField] private SpriteRenderer playerSprite;
     [SerializeField] private GameObject player;
 
@@ -29,7 +30,7 @@ public class HealthBar : MonoBehaviour
     void Awake()
     {
       playerMovement = GameObject.Find("Player").GetComponent<PlayerMovement>();
-      
+      timeStop = GameObject.Find("Game Manager").GetComponent<TimeStop>();
     }
 
     void Start()
@@ -64,6 +65,11 @@ public class HealthBar : MonoBehaviour
       else if(currentHealth > maxHealth)
       {
         currentHealth = maxHealth;
+      }
+
+      if(-damage > currentHealth/2)
+      { 
+        timeStop.StopTime(0, 5, 0);
       }
     }
 

@@ -1,24 +1,14 @@
+using System.Buffers.Text;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Scripting;
 
-public class FatFlyEnemy : MonoBehaviour
+public class FatFly : Enemy
 {
-    private bool goingUp = true;
     private bool touchedRoof, touchedWall, touchedGround;
-    //Components
-    private Rigidbody2D EnemyRb;
-    private HealthBar PlayerHealth;
-    private TimeStop timeStop;
-
-    [Header("DMG")][Space(10)]
-    [SerializeField] private float DealDamage = 20;
-    [SerializeField] private float dmgCooldown = 0.5f;
-    [SerializeField] private bool canHit = true;
-
-    [Header("Movement")][Space(10)]
-    [SerializeField] private Vector2 moveDirection = new Vector2(1f, 2f);
-    [SerializeField] private float moveSpeed = 0.5f;
+    [SerializeField] private bool goingUp = true;
+    [SerializeField] protected Vector2 moveDirection = new Vector2(1f, 2f);
 
     [Header("Checkers")][Space(10)]
     [SerializeField] private GameObject roofCheck;
@@ -29,19 +19,18 @@ public class FatFlyEnemy : MonoBehaviour
 
     void Awake()
     {
-        EnemyRb = GetComponent<Rigidbody2D>();
-        PlayerHealth = GameObject.Find("Health").GetComponent<HealthBar>();
-        timeStop = GameObject.Find("Game Manager").GetComponent<TimeStop>();
+        GettingComponent();
     }
 
     void Update()
     {
-        EnemyRb.velocity = moveDirection * moveSpeed;
-        HitLogic();
+      Move();
     }
 
-    void HitLogic()
+    protected override void Move()
     {
+       EnemyRb.velocity = moveDirection * moveSpeed;
+       //
        touchedRoof = HitDedector(roofCheck, roofCheckSize, groundLayer);
        touchedWall = HitDedector(wallCheck, wallCheckSize, groundLayer);
        touchedGround = HitDedector(groundCheck, groundCheckSize, groundLayer);
@@ -65,34 +54,22 @@ public class FatFlyEnemy : MonoBehaviour
         return Physics2D.OverlapBox(gameObject.transform.position, size, 0f, layer);
     }
 
-    void ChangeYDirection()
+    protected override void Flip()
+    {
+        base.Flip();
+        moveDirection.x = -moveDirection.x;
+    }
+
+    protected void ChangeYDirection()
     {
         moveDirection.y = -moveDirection.y;
         goingUp = !goingUp;
     }
 
-    void Flip()
+    protected override void OnTriggerEnter2D(Collider2D collider)
     {
-        transform.Rotate(new Vector2(0, 180));
-        moveDirection.x = -moveDirection.x;
-    }
-
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        if(collision.gameObject.CompareTag("Player") && canHit)
-        {
-          PlayerHealth.TakeDamage(-DealDamage);
-          canHit = false;
-          timeStop.StopTime(0, 6, 0);
-          StopCoroutine(DamageCooldown());
-          StartCoroutine(DamageCooldown());
-        }
-    }
-
-    IEnumerator DamageCooldown()
-    {
-        yield return new WaitForSeconds(dmgCooldown);
-        canHit = true;
+        base.OnTriggerEnter2D(collider);
+        //Extra will be added Knockback & Immune effect
     }
 
     void OnDrawGizmos()
@@ -102,4 +79,5 @@ public class FatFlyEnemy : MonoBehaviour
         Gizmos.DrawWireCube(roofCheck.transform.position, roofCheckSize);
         Gizmos.DrawWireCube(wallCheck.transform.position, wallCheckSize);
     }
+
 }
